@@ -12,6 +12,6 @@ namespace AdventureGameEngine.Interfaces
 
     string HelpText { get; }
 
-    Task Execute(IList<string> tokens, GameState gameState, IList<ICommand> commands);
+    Task<CommandResult> Execute(IList<string> tokens, GameState gameState, IList<ICommand> commands);
   }
 }

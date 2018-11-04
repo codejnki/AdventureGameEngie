@@ -8,6 +8,6 @@ namespace AdventureGameEngine.Interfaces
   {
     IList<ICommand> Commands { set; }
 
-    Task ParseInput(string input, GameState gameState);
+    Task<CommandResult> ParseInput(string input, GameState gameState);
   }
 }

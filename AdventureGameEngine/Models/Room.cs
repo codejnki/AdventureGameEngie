@@ -13,6 +13,8 @@ namespace AdventureGameEngine.Models
 
     public IList<Exit> Exits { get; set; }
 
+    public int TimesPlayerInRoom { get; set; }
+
     public Room()
     {
       this.Exits = new List<Exit>();

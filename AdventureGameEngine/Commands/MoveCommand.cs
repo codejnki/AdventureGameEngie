@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AdventureGameEngine.Interfaces;
@@ -13,26 +12,27 @@ namespace AdventureGameEngine.Commands
 
     public override string HelpText => "Move through an exit.  Example: Move east";
 
-    public override Task Execute(IList<string> tokens, GameState gameState, IList<ICommand> commands)
+    public override Task<CommandResult> Execute(IList<string> tokens, GameState gameState, IList<ICommand> commands)
     {
       var direction = this.GetDirection(tokens);
 
       if (direction == null)
       {
-        Console.WriteLine("I have no idea what you are talking about.");
-        return Task.FromResult(true);
+        return Task.FromResult(new CommandResult(false, "I have no idea what you are talking about."));
       }
 
       var exit = gameState.World.Player.CurrentLocation.Exits.Where(e => e.Direction.Value == direction.Value).FirstOrDefault();
 
       if (exit == null)
       {
-        Console.WriteLine("I don't see an exit in that direction.");
-        return Task.FromResult(true);
+        return Task.FromResult(new CommandResult(false, "I don't see an exit in that direction."));
       }
+      var sb = new List<string>();
 
       gameState.World.Player.CurrentLocation = exit.Room;
-      return Task.FromResult(true);
+      sb.Add($"You move {direction.Value}");
+
+      return Task.FromResult(new CommandResult(true, sb, true));
     }
 
     private Direction GetDirection(IList<string> tokens)

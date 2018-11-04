@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AdventureGameEngine.Interfaces;
@@ -13,14 +12,15 @@ namespace AdventureGameEngine.Commands
 
     public override string HelpText => "Displays all the commands you've given so far.";
 
-    public override Task Execute(IList<string> tokens, GameState gameState, IList<ICommand> commands)
+    public override Task<CommandResult> Execute(IList<string> tokens, GameState gameState, IList<ICommand> commands)
     {
+      var sb = new List<string>();
       foreach(var c in gameState.World.Player.CommandHistory.OrderBy(x => x.Key))
       {
-        Console.WriteLine($"Turn {c.Key}: {c.Value}");
+        sb.Add($"Turn {c.Key}: {c.Value}");
       }
 
-      return Task.FromResult(true);
+      return Task.FromResult(new CommandResult(true, sb));
     }
   }
 }

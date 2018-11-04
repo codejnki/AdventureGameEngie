@@ -10,13 +10,16 @@ namespace AdventureGameEngine
   {
     private readonly IWorldFactory _worldFactory;
     private readonly IParserService _parserService;
+    private readonly IDisplayService _displayService;
 
     public Application(
       IWorldFactory worldFactory,
-      IParserService parserService)
+      IParserService parserService,
+      IDisplayService displayService)
     {
       _worldFactory = worldFactory;
       _parserService = parserService;
+      _displayService = displayService;
     }
 
     public async Task Run(IList<ICommand> commands)
@@ -33,21 +36,20 @@ namespace AdventureGameEngine
 
       while(gameState.GameRunning)
       {
-        Console.Write("> ");
         var playerInput = Console.ReadLine();
         if(string.IsNullOrEmpty(playerInput) == false)
         {
-          await _parserService.ParseInput(playerInput, gameState);
+          var result = await _parserService.ParseInput(playerInput, gameState);
+          gameState.TurnCounter++;
+          _displayService.UpdateDisplay(gameState, result);
         }
-        
-        gameState.TurnCounter++;
-        Console.WriteLine();
       }
     }
 
     private void Introduction(GameState gameState)
     {
-      Console.WriteLine(gameState.World.Player.CurrentLocation.Description);
+      Console.Clear();
+      _displayService.UpdateDisplay(gameState);
     }
   }
 }

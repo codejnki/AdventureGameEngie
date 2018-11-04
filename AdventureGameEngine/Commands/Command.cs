@@ -16,6 +16,6 @@ namespace AdventureGameEngine.Commands
       this.CommandNameAliases = new List<string>();
     }
 
-    public abstract Task Execute(IList<string> tokens, GameState gameState, IList<ICommand> commands);
+    public abstract Task<CommandResult> Execute(IList<string> tokens, GameState gameState, IList<ICommand> commands);
   }
 }
