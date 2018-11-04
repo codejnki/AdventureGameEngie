@@ -1,4 +1,6 @@
-﻿using System;
+﻿using AdventureGameEngine.Interfaces;
+using Autofac;
+using System.Collections.Generic;
 
 namespace AdventureGameEngine
 {
@@ -6,7 +8,10 @@ namespace AdventureGameEngine
   {
     static void Main(string[] args)
     {
-      Console.WriteLine("Hello World!");
+      var serviceResolver = new ServiceResolver();
+      var application = serviceResolver.Container.Resolve<IApplication>();
+      var commands = serviceResolver.Container.Resolve<IList<ICommand>>();
+      application.Run(commands).Wait();
     }
   }
 }
